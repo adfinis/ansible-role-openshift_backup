@@ -1,0 +1,30 @@
+---
+- name: Enable OpenShift Origin {{ openshift_backup_openshift_version }} repository
+  yum:
+    name: centos-release-openshift-origin{{ openshift_backup_openshift_version | regex_replace('\.') }}
+    state: present
+
+- name: Install backup script dependencies
+  yum:
+    name: "{{ openshift_backup_packages }}"
+    state: present
+
+- name: Create /opt/adfinis/bin
+  file:
+    path: /opt/adfinis/bin
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: Copy backup scripts to server
+  copy:
+    src: "{{ item }}"
+    dest: /opt/adfinis/bin/{{ item }}
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - project_export.sh
+    - project_import.sh
+    - openshift_backup.sh

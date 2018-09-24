@@ -1,0 +1,15 @@
+---
+
+# Define the version of the OpenShift client to be installed
+openshift_backup_openshift_version: "3.9"
+
+# Contexts to be created in ~/.kube/config that will be used for backups
+openshift_backup_oc_login: []
+
+# A possible configuration could look like this:
+#
+# .. code-block:: YAML
+#
+#   openshift_backup_oc_login:
+#     - server: https://openshift.example.com:443
+#       token: <JWT>

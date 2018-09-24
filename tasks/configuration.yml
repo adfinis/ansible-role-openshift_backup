@@ -1,0 +1,5 @@
+---
+
+- name: Run oc login for each cluster
+  command: oc login {{ item.server }} --token {{ item.token }}
+  loop: "{{ openshift_backup_oc_login }}"

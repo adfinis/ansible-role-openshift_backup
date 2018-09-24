@@ -1,0 +1,15 @@
+---
+
+dependencies: []
+
+galaxy_info:
+  author: 'Adfinis SyGroup AG'
+  description: 'Installs scripts to allow a backup of OpenShift'
+  company: 'Adfinis SyGroup AG'
+  license: 'GNU General Public License v3'
+  min_ansible_version: '2.0.0'
+  platforms:
+    - name: EL
+      versions:
+        - 7
+  galaxy_tags: []

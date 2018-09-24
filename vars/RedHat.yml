@@ -1,0 +1,5 @@
+---
+
+openshift_backup_packages:
+  - jq
+  - origin-clients

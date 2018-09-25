@@ -6,7 +6,7 @@ ROLE openshift_backup
   :target: https://github.com/adfinis-sygroup/ansible-role-openshift_backup/blob/master/LICENSE
 
 .. image:: https://img.shields.io/travis/adfinis-sygroup/ansible-role-openshift_backup.svg?style=flat-square
-  :target: https://github.com/adfinis-sygroup/ansible-role-openshift_backup
+  :target: https://travis-ci.org/adfinis-sygroup/ansible-role-openshift_backup
 
 .. image:: https://img.shields.io/badge/galaxy-adfinis--sygroup.openshift_backup-660198.svg?style=flat-square
   :target: https://galaxy.ansible.com/adfinis-sygroup/openshift_backup

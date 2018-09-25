@@ -3,8 +3,9 @@
 dependencies: []
 
 galaxy_info:
+  role_name: 'openshift_backup'
   author: 'Adfinis SyGroup AG'
-  description: 'Installs scripts to allow a backup of OpenShift'
+  description: 'Installs scripts to allow a metadata backup of OpenShift'
   company: 'Adfinis SyGroup AG'
   license: 'GNU General Public License v3'
   min_ansible_version: '2.0.0'

@@ -28,3 +28,4 @@
     - project_export.sh
     - project_import.sh
     - openshift_backup.sh
+    - non-namespaced_export.sh

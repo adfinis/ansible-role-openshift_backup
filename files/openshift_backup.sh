@@ -34,4 +34,5 @@ oc version >> "${BACKUP_LOG}" 2>> "${BACKUP_ERROR_LOG}"
 for project in $(oc get projects -o name | sed 's#projects/##'); do
   echo -e "\nBacking up project ${project}" >> "${BACKUP_LOG}" 2>> "${BACKUP_ERROR_LOG}"
   /opt/adfinis/bin/project_export.sh "${project}" >> "${BACKUP_LOG}" 2>> "${BACKUP_ERROR_LOG}"
+  /opt/adfinis/bin/non-namespaced_export.sh >> "${BACKUP_LOG}" 2>> "${BACKUP_ERROR_LOG}"
 done

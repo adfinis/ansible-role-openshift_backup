@@ -18,21 +18,19 @@ VAULT="/home/backup/$1"
 
 BACKUP_DIR="${VAULT}/$(date +%Y%m%d_%H%M)/openshift/projects"
 BACKUP_LOG="${BACKUP_DIR}/openshift_backup.log"
-BACKUP_ERROR_LOG="${BACKUP_DIR}/openshift_backup.error.log"
 mkdir -p "${BACKUP_DIR}"
 
 cd "${BACKUP_DIR}" || exit 1
 touch "${BACKUP_LOG}" || exit 1
-touch "${BACKUP_ERROR_LOG}" || exit 1
 
 # set backup context in oc
-oc config use-context ${CONTEXT} >> "${BACKUP_LOG}" 2>> "${BACKUP_ERROR_LOG}"
+oc config use-context ${CONTEXT} &>> "${BACKUP_LOG}"
 
 # output version info
-oc version >> "${BACKUP_LOG}" 2>> "${BACKUP_ERROR_LOG}"
+oc version &>> "${BACKUP_LOG}"
 
 for project in $(oc get projects -o name | sed 's#projects/##'); do
-  echo -e "\nBacking up project ${project}" >> "${BACKUP_LOG}" 2>> "${BACKUP_ERROR_LOG}"
-  /opt/adfinis/bin/project_export.sh "${project}" >> "${BACKUP_LOG}" 2>> "${BACKUP_ERROR_LOG}"
-  /opt/adfinis/bin/non-namespaced_export.sh >> "${BACKUP_LOG}" 2>> "${BACKUP_ERROR_LOG}"
+  echo -e "\nBacking up project ${project}" &>> "${BACKUP_LOG}"
+  /opt/adfinis/bin/project_export.sh "${project}" &>> "${BACKUP_LOG}"
+  /opt/adfinis/bin/non-namespaced_export.sh &>> "${BACKUP_LOG}"
 done

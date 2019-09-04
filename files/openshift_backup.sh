@@ -34,3 +34,10 @@ for project in $(oc get projects -o name | sed 's#projects/##'); do
   /opt/adfinis/bin/project_export.sh "${project}" &>> "${BACKUP_LOG}"
   /opt/adfinis/bin/non-namespaced_export.sh &>> "${BACKUP_LOG}"
 done
+
+# clean up old backups
+
+if [ $CLEANUP -gt 0 ] 
+  then
+  find ${VAULT} -mtime +${CLEANUP} -not -name default.conf -exec rm -r {} \; 
+fi

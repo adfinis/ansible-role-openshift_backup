@@ -37,7 +37,7 @@ done
 
 # clean up old backups
 
-if [ $CLEANUP -gt 0 ] 
+if [ ${CLEANUP} -gt 0 ] 
   then
   find ${VAULT} -mtime +${CLEANUP} -not -name default.conf -exec rm -r {} \; 
 fi

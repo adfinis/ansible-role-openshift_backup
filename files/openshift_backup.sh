@@ -39,5 +39,5 @@ done
 
 if [ ${CLEANUP} -gt 0 ] 
   then
-  find ${VAULT} -mtime +${CLEANUP} -not -name default.conf -exec rm -r {} \; 
+  find ${VAULT} -mtime +${CLEANUP} -not -name default.conf -delete
 fi

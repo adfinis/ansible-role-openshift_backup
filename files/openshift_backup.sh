@@ -39,5 +39,5 @@ done
 
 if [ ${CLEANUP} -gt 0 ] 
   then
-  find ${VAULT} -mtime +${CLEANUP} -not -name default.conf -delete
+  find "${VAULT}" -mindepth 1 -maxdepth 1 -name '20*' -daystart -type d -mtime +${RETENTION} | xargs -r rm -rf
 fi

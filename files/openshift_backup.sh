@@ -37,7 +37,7 @@ done
 
 # clean up old backups
 
-if [ ${CLEANUP} -gt 0 ] 
+if [ ${RETENTION} -gt 0 ] 
   then
   find "${VAULT}" -mindepth 1 -maxdepth 1 -name '20*' -daystart -type d -mtime +${RETENTION} | xargs -r rm -rf
 fi

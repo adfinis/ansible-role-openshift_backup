@@ -34,3 +34,10 @@ for project in $(oc get projects -o name | sed 's#projects/##'); do
   /opt/adfinis/bin/project_export.sh "${project}" &>> "${BACKUP_LOG}"
   /opt/adfinis/bin/non-namespaced_export.sh &>> "${BACKUP_LOG}"
 done
+
+# clean up old backups
+
+if [ ${RETENTION} -gt 0 ] 
+  then
+  find "${VAULT}" -mindepth 1 -maxdepth 1 -name '20*' -daystart -type d -mtime +${RETENTION} | xargs -r rm -rf
+fi

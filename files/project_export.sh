@@ -193,15 +193,19 @@ svcs(){
             .metadata.generation,
             .spec.clusterIP
             )' > ${PROJECT}/svc_${svc}.json
+    # If no app selector is present AND the service type is NOT ExternalName,
+    # backup the explicit endpoint configuration as well.
     if [[ $(cat ${PROJECT}/svc_${svc}.json | jq -e '.spec.selector.app') == "null" ]]; then
-      oc get --export -o json endpoints ${svc} -n ${PROJECT}| jq '
-        del(.status,
-            .metadata.uid,
-            .metadata.selfLink,
-            .metadata.resourceVersion,
-            .metadata.creationTimestamp,
-            .metadata.generation
-            )' > ${PROJECT}/endpoint_${svc}.json
+      if [[ $(cat ${PROJECT}/svc_${svc}.json | jq -re '.spec.type') != "ExternalName" ]]; then
+        oc get --export -o json endpoints ${svc} -n ${PROJECT}| jq '
+          del(.status,
+              .metadata.uid,
+              .metadata.selfLink,
+              .metadata.resourceVersion,
+              .metadata.creationTimestamp,
+              .metadata.generation
+              )' > ${PROJECT}/endpoint_${svc}.json
+      fi
     fi
   done
 }

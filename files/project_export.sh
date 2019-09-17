@@ -185,7 +185,7 @@ svcs(){
   SVCS=$(oc get svc -n ${PROJECT} -o jsonpath="{.items[*].metadata.name}")
   for svc in ${SVCS}; do
     oc get --export -o=json svc ${svc} -n ${PROJECT} | jq '
-      del(.status,machine
+      del(.status,
             .metadata.uid,
             .metadata.selfLink,
             .metadata.resourceVersion,

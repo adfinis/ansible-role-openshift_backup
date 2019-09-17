@@ -1,5 +1,5 @@
 ---
 
 - name: run oc login for each cluster
-  command: oc login {{ item.server }} --token {{ item.token }} # noqa [301]
+  command: oc login {{ item.server }} --token {{ item.token }} # noqa 301
   loop: '{{ openshift_backup_oc_login }}'

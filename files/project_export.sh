@@ -195,7 +195,6 @@ svcs(){
             )' > ${PROJECT}/svc_${svc}.json
     if [[ $(cat ${PROJECT}/svc_${svc}.json | jq -e '.spec.selector.app') == "null" ]]; then
       if [[ `oc get endpoints ${svc} -n ${PROJECT} | wc -l` -gt 0 ]]; then
-      then
         oc get --export -o json endpoints ${svc} -n ${PROJECT}| jq '
           del(.status,
               .metadata.uid,

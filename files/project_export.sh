@@ -185,7 +185,7 @@ svcs(){
   SVCS=$(oc get svc -n ${PROJECT} -o jsonpath="{.items[*].metadata.name}")
   for svc in ${SVCS}; do
     oc get --export -o=json svc ${svc} -n ${PROJECT} | jq '
-      del(.status,
+      del(.status,machine
             .metadata.uid,
             .metadata.selfLink,
             .metadata.resourceVersion,
@@ -194,7 +194,7 @@ svcs(){
             .spec.clusterIP
             )' > ${PROJECT}/svc_${svc}.json
     if [[ $(cat ${PROJECT}/svc_${svc}.json | jq -e '.spec.selector.app') == "null" ]]; then
-      if [[ `oc get endpoints ${svc} -n ${PROJECT} | wc -l` -gt 0 ]]; then
+      if [[ $(oc get endpoints ${svc} -n ${PROJECT} -o name | wc -l) -gt 0 ]]; then
         oc get --export -o json endpoints ${svc} -n ${PROJECT}| jq '
           del(.status,
               .metadata.uid,

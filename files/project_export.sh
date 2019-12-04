@@ -118,11 +118,13 @@ dcs(){
           )' > ${PROJECT}/dc_${dc}.json
     if [ !$(cat ${PROJECT}/dc_${dc}.json | jq '.spec.triggers[].type' | grep -q "ImageChange") ]; then
       for container in $(cat ${PROJECT}/dc_${dc}.json | jq -r '.spec.triggers[] | select(.type == "ImageChange") .imageChangeParams.containerNames[]'); do
-        echo "Patching DC..."
         OLD_IMAGE=$(cat ${PROJECT}/dc_${dc}.json | jq --arg cname ${container} -r '.spec.template.spec.containers[] | select(.name == $cname)| .image')
         NEW_IMAGE=$(cat ${PROJECT}/dc_${dc}.json | jq -r '.spec.triggers[] | select(.type == "ImageChange") .imageChangeParams.from.name // empty')
-        if [ -n "$OLD_IMAGE" -o -n "$NEW_IMAGE" ]; then
+        if [ -n "$OLD_IMAGE" -a -n "$NEW_IMAGE" ]; then
+          echo "Patching DC: From '${OLD_IMAGE}' to '${NEW_IMAGE}'"
           sed -e "s#$OLD_IMAGE#$NEW_IMAGE#g" ${PROJECT}/dc_${dc}.json >> ${PROJECT}/dc_${dc}_patched.json
+        else
+          echo "Invalid ImageChange patch, skipping: From '${OLD_IMAGE:-(none)}' to '${NEW_IMAGE:-(none)}'"
         fi
       done
     fi

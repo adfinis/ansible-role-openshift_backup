@@ -117,11 +117,18 @@ dcs(){
           .spec.triggers[].imageChangeParams.lastTriggeredImage
           )' > ${PROJECT}/dc_${dc}.json
     if [ !$(cat ${PROJECT}/dc_${dc}.json | jq '.spec.triggers[].type' | grep -q "ImageChange") ]; then
+      # Iterate over the ImageChange triggers and attempt to apply the images referenced there to the containers the trigger references
       for container in $(cat ${PROJECT}/dc_${dc}.json | jq -r '.spec.triggers[] | select(.type == "ImageChange") .imageChangeParams.containerNames[]'); do
-        echo "Patching DC..."
         OLD_IMAGE=$(cat ${PROJECT}/dc_${dc}.json | jq --arg cname ${container} -r '.spec.template.spec.containers[] | select(.name == $cname)| .image')
         NEW_IMAGE=$(cat ${PROJECT}/dc_${dc}.json | jq -r '.spec.triggers[] | select(.type == "ImageChange") .imageChangeParams.from.name // empty')
-        sed -e "s#$OLD_IMAGE#$NEW_IMAGE#g" ${PROJECT}/dc_${dc}.json >> ${PROJECT}/dc_${dc}_patched.json
+        # Only patch the container image reference if both the old and new image could be read successfully.
+        # This would e.g. fail if the ImageChange referenced an inexistent container or an inexistent image.
+        if [ -n "$OLD_IMAGE" -a -n "$NEW_IMAGE" ]; then
+          echo "Patching DC: From '${OLD_IMAGE}' to '${NEW_IMAGE}'"
+          sed -e "s#$OLD_IMAGE#$NEW_IMAGE#g" ${PROJECT}/dc_${dc}.json >> ${PROJECT}/dc_${dc}_patched.json
+        else
+          echo "Invalid ImageChange patch, skipping: From '${OLD_IMAGE:-(none)}' to '${NEW_IMAGE:-(none)}'"
+        fi
       done
     fi
   done

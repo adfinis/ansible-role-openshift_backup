@@ -29,7 +29,7 @@ oc config use-context ${CONTEXT} &>> "${BACKUP_LOG}"
 # output version info
 oc version &>> "${BACKUP_LOG}"
 
-for project in $(oc get projects -o name | sed 's#projects/##'); do
+for project in $(oc get projects -o name | sed 's#project.project.openshift.io/##'); do
   echo -e "\nBacking up project ${project}" &>> "${BACKUP_LOG}"
   /opt/adfinis/bin/project_export.sh "${project}" &>> "${BACKUP_LOG}"
 done

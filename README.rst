@@ -42,7 +42,7 @@ openshift_backup_oc_login: []
 Dependencies
 =============
 
-This role as no other dependencies.
+This role as no dependencies.
 
 Example Playbook
 =================
